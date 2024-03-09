@@ -13,20 +13,24 @@ defmodule TextClient.Impl.Player do
   ##############################################################################################################
 
   @spec interact(state()) :: :ok
-  def interact({_game, _tally = %{game_state: :won}}) do
-    IO.puts("Congrats, you won!")
+  def interact({game, _tally = %{game_state: :won}}) do
+    """
+    Word: #{game.letters |> Enum.join()}
+    Congrats, you won!
+    """
+    |> IO.puts()
   end
 
-  def interact({_game, tally = %{game_state: :lost}}) do
-    IO.puts("You lost! The word was #{tally.letters |> Enum.join()}")
+  def interact({game, _tally = %{game_state: :lost}}) do
+    IO.puts("You lost! The word was #{game.letters |> Enum.join()}.")
   end
 
-  def interact({_game, tally}) do
+  def interact({game, tally}) do
     IO.puts(feedback_for_tally(tally))
     IO.puts(current_word(tally))
-    guess = get_guess()
-    # make move
-    # recurse
+
+    Hangman.make_move(game, get_guess())
+    |> interact()
   end
 
   ##############################################################################################################
