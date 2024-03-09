@@ -24,7 +24,7 @@ defmodule TextClient.Impl.Player do
   def interact({_game, tally}) do
     IO.puts(feedback_for_tally(tally))
     IO.puts(current_word(tally))
-    # get next guess
+    guess = get_guess()
     # make move
     # recurse
   end
@@ -52,4 +52,13 @@ defmodule TextClient.Impl.Player do
 
   def letters_guessed_output(_used = []), do: ""
   def letters_guessed_output(used), do: "Letters guessed: #{used |> Enum.join(", ")}"
+
+  ##############################################################################################################
+
+  def get_guess() do
+    IO.gets("Guess a letter: ")
+    |> to_string()
+    |> String.trim()
+    |> String.downcase()
+  end
 end
